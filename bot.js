@@ -85,7 +85,7 @@ bot.on("message", (user, userID, channelID, message, event) => {
     case "!who_plays":
       const players = getPlayerList(game, channelID);
       const playerMentions = players.map(userId => `<@${userId}>`).join(", ");
-      const message = !is_empty(playerMentions)
+      const message = !_.is_empty(playerMentions)
         ? `${game} players: ${playerMentions}`
         : `No on plays ${game} or they just don't want to admit it`;
       bot.sendMessage({
