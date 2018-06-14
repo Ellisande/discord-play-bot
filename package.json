@@ -1,0 +1,15 @@
+{
+  "name": "play-bot",
+  "version": "0.1.0",
+  "description": "Find out who plays the game you are excited about!",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ellisande",
+  "license": "MIT",
+  "dependencies": {
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "winston": "^3.0.0"
+  }
+}
