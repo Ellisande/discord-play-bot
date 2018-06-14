@@ -105,5 +105,10 @@ bot.on("message", (user, userID, channelID, message, event) => {
         message: allGames.join(", ")
       });
       break;
+    case "!commands":
+      bot.sendMessage({
+        to: channelID,
+        message: "!i_play, !who_plays, !games"
+      });
   }
 });
