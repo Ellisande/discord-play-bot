@@ -31,27 +31,33 @@ const bot = new Discord.Client({
 
 const channels = {};
 
-const games = {};
+const gamesByChannel = {};
 
-const addPlayer = (game, playerName) => {
+const addPlayer = (game, playerName, channelID) => {
+  if (!channels[channelID]) {
+    logger.info(`Initializing the channel container: ${channelID}`);
+    channels[channelID] = {};
+  }
+  const games = channels[channelID];
   if (!games[game]) {
-    logger.info("Initalizing the game: " + game);
+    logger.info(`Initalizing the game: ${game}`);
     games[game] = [];
   }
   if (games[game].includes(playerName)) {
     logger.info(
-      `Player ${playerName} was always playing ${game} so we didn't add them`
+      `Player ${playerName} was already playing ${game} so we didn't add them`
     );
     return games[game];
   }
   games[game] = [...games[game], playerName];
 };
 
-const getPlayerList = game => {
-  return games[game] || [];
+const getPlayerList = (game, channelId) => {
+  return channels[channelId] ? channels[channelId][game] : [] || [];
 };
 
-const getAllGames = () => Object.keys(games);
+const getAllGames = channelId =>
+  channels[channelId] ? Object.keys(channels[channelId]) : [];
 
 bot.on("ready", event => {
   logger.info("Connected");
@@ -80,7 +86,7 @@ bot.on("message", (user, userID, channelID, message, event) => {
       logger.info("I pinged!");
       break;
     case "!who_plays":
-      const players = getPlayerList(game);
+      const players = getPlayerList(game, channelID);
       const playerMentions = players.map(userId => `<@${userId}>`).join(", ");
       const message =
         players.length > 0
@@ -92,14 +98,14 @@ bot.on("message", (user, userID, channelID, message, event) => {
       });
       break;
     case "!i_play":
-      addPlayer(game, userID);
+      addPlayer(game, userID, channelID);
       bot.sendMessage({
         to: channelID,
         message: `${user} now plays ${game}`
       });
       break;
     case "!games":
-      const allGames = getAllGames();
+      const allGames = getAllGames(channelID);
       bot.sendMessage({
         to: channelID,
         message: allGames.join(", ")
