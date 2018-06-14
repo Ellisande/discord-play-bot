@@ -1,13 +1,13 @@
-var Discord = require("discord.io");
-var winston = require("winston");
-var auth = require("./auth.json");
+const Discord = require("discord.io");
+const winston = require("winston");
+const auth = process.env.NODE_ENV == "production" ? {} : require("./auth.json");
 
-var logger = winston.createLogger({
+const logger = winston.createLogger({
   transports: [new winston.transports.Console({ colorize: true })]
 });
 logger.level = "debug";
 
-var bot = new Discord.Client({
+const bot = new Discord.Client({
   token: process.env.bot_token || auth.token,
   autorun: true
 });
