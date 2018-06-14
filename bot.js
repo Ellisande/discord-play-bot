@@ -34,20 +34,12 @@ const channels = {};
 
 const gamesByChannel = {};
 
-const addPlayer = (game, playerName, channelId) => {
-  _.merge(channels[channelId], {});
-  const games = channels[channelId];
-  if (!games[game]) {
-    logger.info(`Initalizing the game: ${game}`);
-    games[game] = [];
+const addPlayer = (game, playerId, channelId) => {
+  const playerList = _.get(channels, `${channelId}.${game}`, []);
+  if (playerList.includes(playerId)) {
+    return playerList;
   }
-  if (games[game].includes(playerName)) {
-    logger.info(
-      `Player ${playerName} was already playing ${game} so we didn't add them`
-    );
-    return games[game];
-  }
-  games[game] = [...games[game], playerName];
+  _.set(channels, `${channelId}.${game}`, [...playerList, playerId]);
 };
 
 const getPlayerList = (game, channelId) =>
