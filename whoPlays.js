@@ -14,8 +14,9 @@ const sendMessage = (bot, channelId, message) =>
 
 const whoPlaysCommand = new Command({
   command: "who_plays",
-  handler: ({ db, channelId, message: gameName, bot }) => {
+  handler: ({ db, channelId, message: gameName, bot, logger }) => {
     const gameDoc = db.doc(`/channels/${channelId}/games/${gameName}`);
+    logger.info(`Fetching players for ${gameName}`);
     gameDoc
       .get()
       .then(docOrDefault([]))
