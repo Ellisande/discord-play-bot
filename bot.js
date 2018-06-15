@@ -2,6 +2,8 @@ const Discord = require("discord.io");
 const winston = require("winston");
 const _ = require("lodash");
 const admin = require("firebase-admin");
+const { whoPlaysCommand } = require("./whoPlays");
+const { iPlayCommand } = require("./iPlay");
 
 const discordAuth =
   process.env.NODE_ENV == "production" ? {} : require("./auth.json");
@@ -32,72 +34,45 @@ bot.on("ready", event => {
   logger.info(`${bot.username} - (${bot.id})`);
 });
 
-const toMentions = playerId => `<@${playerId}>`;
-
-const docOrDefault = defaultValue => doc => (doc.exists ? doc.data() : []);
-
-const getPlayers = gameName => games => games[gameName];
-
-const buildWhoPlaysMessage = (players, gameName) =>
-  `${gameName} players: ${players.map(toMentions).join(", ")}`;
-
-const sendMessage = (channelId, message) =>
-  bot.sendMessage({
-    to: channelId,
-    message
-  });
+const allCommands = [whoPlaysCommand, iPlayCommand];
 
 bot.on("message", (user, userID, channelID, message, event) => {
-  logger.info(`Got message from ${userID} in channel ${channelID}!`);
+  const enableTestCommands = channelID == "457011209372303371";
 
-  if (channelID != "457011209372303371") {
-    logger.info("Not for the test channel");
+  const commands = allCommands.filter(
+    i => i.test == false || enableTestCommands
+  );
+  const command = message.split(" ")[0];
+
+  if (command[0] != "!") {
+    logger.debug("Message was not a command");
     return;
   }
-
-  const command = message.split(" ")[0];
   const gameName = message.replace(RegExp(`^${command} `), "");
 
   logger.info(`[${command}] with game ${gameName} from ${userID}`);
 
-  if (command == "!i_play_test") {
-    const gameDoc = db.doc(`/channels/${channelID}/games/${gameName}`);
-
-    db.runTransaction(t => {
-      return t.get(gameDoc).then(doc => {
-        const oldPlayers = doc.data().players;
-        if (oldPlayers.includes(userID)) {
-          logger.info(
-            `[${command}] player ${userID} already plays ${gameName}`
-          );
-          throw "Player already plays";
-        }
-        const newPlayers = [...oldPlayers, userID];
-        t.update(gameDoc, { players: newPlayers });
-      });
-    })
-      .then(() => {
-        logger.info(`[${command}] players ${userID} now plays ${gameName}`);
-        bot.sendMessage({
-          to: channelID,
-          message: `You are now playing ${gameName}`
-        });
-      })
-      .catch(() => {
-        bot.sendMessage({
-          to: channelID,
-          message: `<@${userID}> already play ${gameName}`
-        });
-      });
+  const matchingCommand = commands.find(currentCommand =>
+    currentCommand.matches(command)
+  );
+  if (matchingCommand) {
+    matchingCommand.handle({
+      db,
+      user,
+      userId: userID,
+      channelId: channelID,
+      message,
+      bot,
+      event,
+      logger
+    });
   }
-
-  if (command == "!who_plays") {
-    const gameDoc = db.doc(`/channels/${channelID}/games/${gameName}`);
-    gameDoc
-      .get()
-      .then(docOrDefault([]))
-      .then(game => game.players)
-      .then(players => buildWhoPlaysMessage(players, gameName))
-      .then(message => sendMessage(channelID, message));
+  if (command == "!commands") {
+    bot.sendMessage({
+      to: channelID,
+      message: `Available <@${bot.id}> commands: ${commands
+        .map(i => "!" + i.command)
+        .join(", ")}`
+    });
   }
 });
