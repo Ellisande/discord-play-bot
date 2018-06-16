@@ -6,6 +6,7 @@ require("./api");
 const { whoPlaysCommand } = require("./whoPlays");
 const { iPlayCommand } = require("./iPlay");
 const { gamesCommand } = require("./games");
+const { whatsNewCommand } = require("./whatsNew");
 
 const discordAuth =
   process.env.NODE_ENV == "production" ? {} : require("./auth.json");
@@ -36,7 +37,12 @@ bot.on("ready", event => {
   logger.info(`${bot.username} - (${bot.id})`);
 });
 
-const allCommands = [whoPlaysCommand, iPlayCommand, gamesCommand];
+const allCommands = [
+  whoPlaysCommand,
+  iPlayCommand,
+  gamesCommand,
+  whatsNewCommand
+];
 
 bot.on("message", (user, userID, channelID, message, event) => {
   const enableTestCommands = channelID == "457011209372303371";
