@@ -11,7 +11,7 @@ const discordAuth =
   process.env.NODE_ENV == "production" ? {} : require("./auth.json");
 
 const firebaseCert = process.env.NODE_ENV
-  ? JSON.parse(proccess.env.firebase_cert)
+  ? JSON.parse(process.env.firebase_cert)
   : require("./firebaseCert.json");
 
 const logger = winston.createLogger({
