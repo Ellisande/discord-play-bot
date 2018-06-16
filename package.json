@@ -5,7 +5,8 @@
   "main": "bot.js",
   "scripts": {
     "start": "node src/bot.js",
-    "test": "cucumber-js"
+    "test": "LOG_LEVEL=error cucumber-js",
+    "test:debug": "cucumber-js"
   },
   "author": "ellisande",
   "license": "MIT",
