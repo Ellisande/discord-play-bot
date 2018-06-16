@@ -3,17 +3,17 @@ const winston = require("winston");
 const _ = require("lodash");
 const admin = require("firebase-admin");
 require("./api");
-const { whoPlaysCommand } = require("./whoPlays");
-const { iPlayCommand } = require("./iPlay");
-const { gamesCommand } = require("./games");
-const { whatsNewCommand } = require("./whatsNew");
+const { whoPlaysCommand } = require("./commands/whoPlays");
+const { iPlayCommand } = require("./commands/iPlay");
+const { gamesCommand } = require("./commands/games");
+const { whatsNewCommand } = require("./commands/whatsNew");
 
 const discordAuth =
-  process.env.NODE_ENV == "production" ? {} : require("./auth.json");
+  process.env.NODE_ENV == "production" ? {} : require("../auth.json");
 
 const firebaseCert = process.env.NODE_ENV
   ? JSON.parse(process.env.firebase_cert)
-  : require("./firebaseCert.json");
+  : require("../firebaseCert.json");
 
 const logger = winston.createLogger({
   transports: [new winston.transports.Console()]

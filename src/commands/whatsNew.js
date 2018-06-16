@@ -1,4 +1,4 @@
-const { Command } = require("./command");
+const { Command } = require("./src/commands/command");
 
 const newThings = [
   `Thanks for asking! My memory is much better now, I won't forget the games you play anymore!`,
