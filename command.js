@@ -14,7 +14,7 @@ const commandFormat = winston.format((info, opts) => {
 
 class Command {
   constructor({ command, handler, test }) {
-    this.test = test;
+    this.test = test || false;
     this.commandString = !test ? command : `${command}_test`;
     this.handler = handler;
     this.commandMatcher = RegExp(`^!?${this.commandString} ?`);
