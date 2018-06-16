@@ -8,7 +8,6 @@ const newThings = [
 
 const whatsNewCommand = new Command({
   command: "whats_new",
-  test: true,
   handler: ({ message, bot, channelId, logger }) => {
     let numNewThings;
     try {
