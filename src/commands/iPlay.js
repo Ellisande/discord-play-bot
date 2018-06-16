@@ -16,9 +16,13 @@ const iPlayCommand = new Command({
         logger.info(`player ${userId} already plays ${gameName}`);
         throw ALREADY_PLAYS;
       }
-      return { players: [...oldPlayers, userId] };
+      const newPlayers = [...oldPlayers, userId];
+      logger.debug(
+        `Updating player state from ${oldPlayers} to ${[newPlayers]}`
+      );
+      return { players: newPlayers };
     });
-    playerUpdatePromise
+    return playerUpdatePromise
       .then(() => {
         logger.info(`player ${userId} now plays ${gameName}`);
         bot.sendMessage({
