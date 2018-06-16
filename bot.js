@@ -2,6 +2,7 @@ const Discord = require("discord.io");
 const winston = require("winston");
 const _ = require("lodash");
 const admin = require("firebase-admin");
+require("./api");
 const { whoPlaysCommand } = require("./whoPlays");
 const { iPlayCommand } = require("./iPlay");
 const { gamesCommand } = require("./games");
