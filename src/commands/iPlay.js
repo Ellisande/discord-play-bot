@@ -1,5 +1,5 @@
 const { Command } = require("./command");
-const { update } = require("./firestoreUtils");
+const { update } = require("../firestoreUtils");
 const _ = require("lodash");
 
 const ALREADY_PLAYS = Symbol("Already Plays");

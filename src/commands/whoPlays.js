@@ -1,5 +1,5 @@
 const { Command } = require("./command");
-const { docOrDefault } = require("./firestoreUtils");
+const { docOrDefault } = require("../firestoreUtils");
 
 const toMentions = playerId => `<@${playerId}>`;
 
