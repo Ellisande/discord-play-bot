@@ -4,7 +4,9 @@ const { docOrDefault } = require("../firestoreUtils");
 const toMentions = playerId => `<@${playerId}>`;
 
 const buildWhoPlaysMessage = (players, gameName) =>
-  `${gameName} players: ${players.map(toMentions).join(", ")}`;
+  Object.keys(players).length == 0
+    ? `No one plays ${gameName}... or at least they won't admit it`
+    : `${gameName} players: ${players.map(toMentions).join(", ")}`;
 
 const sendMessage = (bot, channelId, message) =>
   bot.sendMessage({
@@ -19,7 +21,7 @@ const whoPlaysCommand = new Command({
     logger.info(`Fetching players for ${gameName}`);
     return gameDoc
       .get()
-      .then(docOrDefault([]))
+      .then(docOrDefault({ players: [] }))
       .then(game => game.players)
       .then(players => buildWhoPlaysMessage(players, gameName))
       .then(message => sendMessage(bot, channelId, message));
