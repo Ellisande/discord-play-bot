@@ -19,9 +19,8 @@ Given(/a user {(.*)}/, function(userId) {
 Then(/the bot responds with {(.*)}/, function(expectedMessage) {
   const { bot } = this.mocks;
   const calledWith = bot.sendMessage.lastArg;
-  //   console.log("Send message was called ", bot.sendMessage.callCount);
-  expect(calledWith).to.deep.equal({
-    to: this.given.channelId,
-    message: expectedMessage
-  });
+  const actualResponseChannel = calledWith.to;
+  const actualResponseMessage = calledWith.message;
+  expect(actualResponseChannel).to.equal(this.given.channelId);
+  expect(actualResponseMessage).to.include(expectedMessage);
 });
