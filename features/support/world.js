@@ -5,7 +5,7 @@ const dbMock = () => {
   const collection = sinon.fake();
   const docMock = {
     exists: true,
-    data: sinon.fake()
+    data: sinon.fake.resolves({ players: [] })
   };
   const doc = sinon.fake.returns({
     get: sinon.fake.resolves(docMock)
