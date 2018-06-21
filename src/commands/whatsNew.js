@@ -1,7 +1,7 @@
 const { Command } = require("./command");
 
 const newThings = [
-  `I have a much more natural interface now! Just metion me and ask about what you are looking for. Try @play-bot commands to learn more!`,
+  `I have a much more natural interface now! Just metion me and ask about what you are looking for. Try \`<@456628305911873536> commands\` to learn more!`,
   `Thanks for asking! My memory is much better now, I won't forget the games you play anymore!`,
   `You can now tell me what games you play with !i_play {game}`,
   `Looking for other players? Try !who_plays {game} to see who's playing!`
@@ -10,6 +10,7 @@ const newThings = [
 const whatsNewCommand = new Command({
   name: "What's new",
   command: /(what's|what is|is anything) new\??/gi,
+  example: "whats new?",
   handler: ({ message, bot, channelId, logger }) => {
     let numNewThings;
     try {
