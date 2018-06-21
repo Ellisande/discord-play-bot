@@ -55,12 +55,10 @@ bot.on("message", (user, userID, channelID, originalMessage, event) => {
     return;
   }
 
-  if (channelID != "457011209372303371") {
-    logger.debug("Only test for now");
-    return;
-  }
-
-  logger.debug(originalMessage);
+  // if (channelID != "457011209372303371") {
+  //   logger.debug("Only test for now");
+  //   return;
+  // }
 
   const commands = allCommands.filter(
     i => i.test == false || enableTestCommands
