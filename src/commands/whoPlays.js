@@ -15,8 +15,11 @@ const sendMessage = (bot, channelId, message) =>
   });
 
 const whoPlaysCommand = new Command({
-  command: "who_plays",
-  handler: ({ db, channelId, message: gameName, bot, logger }) => {
+  name: "Who Plays",
+  command: /(who is|does anyone|who) (plays?|playing) /gi,
+  example: "who plays dauntless?",
+  handler: ({ db, channelId, message, bot, logger }) => {
+    const gameName = message.toLowerCase();
     const gameDoc = db.doc(`/channels/${channelId}/games/${gameName}`);
     logger.info(`Fetching players for ${gameName}`);
     return gameDoc

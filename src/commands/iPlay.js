@@ -5,7 +5,9 @@ const _ = require("lodash");
 const ALREADY_PLAYS = Symbol("Already Plays");
 
 const iPlayCommand = new Command({
-  command: "i_play",
+  name: "I Play",
+  command: /i play /gi,
+  example: "I play dauntless",
   handler: ({ channelId, message, userId, db, bot, logger }) => {
     const gameName = message.toLowerCase();
     const gameDoc = db.doc(`/channels/${channelId}/games/${gameName}`);

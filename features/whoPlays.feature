@@ -4,11 +4,11 @@ Feature: Users can ask who plays a game and get a list of player
         Given a channel {channel1}
         And a user {user1}
         And user {user2} plays {game1}
-        When the user says !who_plays {game1}
+        When the user says who plays game1
         Then the bot responds with {game1 players: <@user2>}
 
     Scenario: No one plays the requested game
         Given a channel {channel1}
         And a user {user1}
-        When the user says !who_plays {game2}
+        When the user says does anyone play game2
         Then the bot responds with {No one plays game2}
