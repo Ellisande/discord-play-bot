@@ -1,14 +1,13 @@
 const { Given, When, Then } = require("cucumber");
 
-When(/the user says (who is|does anyone|who) (plays?|playing) (.*)/, function(
-  prefix,
+When(/the user says (what's|what is|is anything) (new.*)/, function(
   command,
-  gameName
+  remaining
 ) {
   const { bot, user, db, event } = this.mocks;
   const {
-    whoPlaysCommand: commandClass
-  } = require(`../../src/commands/whoPlays`);
+    whatsNewCommand: commandClass
+  } = require(`../../src/commands/whatsNew`);
 
   return commandClass.handle({
     bot,
@@ -17,6 +16,6 @@ When(/the user says (who is|does anyone|who) (plays?|playing) (.*)/, function(
     db,
     userId: this.given.userId,
     channelId: this.given.channelId,
-    message: `${prefix} ${command} ${gameName}`
+    message: `${command} ${remaining}`
   });
 });

@@ -13,22 +13,25 @@ const commandFormat = winston.format((info, opts) => {
 });
 
 class Command {
-  constructor({ command, handler, test }) {
+  constructor({ command, name, handler, test, example }) {
     this.test = test || false;
-    this.commandString = !test ? command : `${command}_test`;
     this.handler = handler;
-    this.commandMatcher = RegExp(`^!?${this.commandString} ?`);
+    this.commandMatcher = command;
+    this.name = name;
     this.logger = winston.createLogger({
-      format: combine(commandFormat({ command: this.commandString }), json()),
+      format: combine(commandFormat({ command: this.name }), json()),
       transports: [new winston.transports.Console()]
     });
     this.logger.level = logLevel;
+    this.example = example || this.commandString;
   }
 
   handle({ bot, user, userId, channelId, message, event, db }) {
     const { logger } = this;
-    const remaining = message.replace(this.commandMatcher, "");
-    logger.debug("executing command");
+    const remaining = message
+      .replace(this.commandMatcher, "")
+      .replace(/\?$/, "");
+    logger.debug(`executing command ${this.name} with ${message}`);
     const handlerResult = this.handler({
       bot,
       user,
@@ -49,7 +52,9 @@ class Command {
 
   matches(command) {
     this.logger.debug(
-      `checking if user command ${command} matches our command ${this.command}`
+      `checking if user command ${command} matches our command ${
+        this.commandMatcher
+      }`
     );
     const matched = command.match(this.commandMatcher);
     matched

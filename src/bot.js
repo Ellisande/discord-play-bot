@@ -44,24 +44,36 @@ const allCommands = [
   whatsNewCommand
 ];
 
-bot.on("message", (user, userID, channelID, message, event) => {
+const playBotId = "456628305911873536";
+const botMentionMatcher = /<@456628305911873536> ?/;
+
+bot.on("message", (user, userID, channelID, originalMessage, event) => {
   const enableTestCommands = channelID == "457011209372303371";
+
+  if (userID == playBotId) {
+    logger.debug("Message was from play-bot himself");
+    return;
+  }
+
+  // if (channelID != "457011209372303371") {
+  //   logger.debug("Only test for now");
+  //   return;
+  // }
+
+  logger.debug(originalMessage);
 
   const commands = allCommands.filter(
     i => i.test == false || enableTestCommands
   );
-  const command = message.split(" ")[0];
 
-  if (command[0] != "!") {
+  if (!originalMessage.match(botMentionMatcher)) {
     logger.debug("Message was not a command");
     return;
   }
-  const gameName = message.replace(RegExp(`^${command} `), "");
 
-  logger.info(`[${command}] with game ${gameName} from ${userID}`);
-
+  const message = originalMessage.replace(botMentionMatcher, "");
   const matchingCommand = commands.find(currentCommand =>
-    currentCommand.matches(command)
+    currentCommand.matches(message)
   );
   if (matchingCommand) {
     matchingCommand.handle({
@@ -75,12 +87,14 @@ bot.on("message", (user, userID, channelID, message, event) => {
       logger
     });
   }
-  if (command == "!commands") {
+  if (message.match(/^commands/i)) {
     bot.sendMessage({
       to: channelID,
-      message: `Available <@${bot.id}> commands: ${commands
-        .map(i => "!" + i.command)
-        .join(", ")}`
+      message:
+        "Try asking me:\n" +
+        commands
+          .map((i, index) => `[${index + 1}]: <@${playBotId}> ${i.example}`)
+          .join("\n")
     });
   }
 });
