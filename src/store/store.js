@@ -10,9 +10,9 @@ logger.level = logLevel;
 
 const ALREADY_PLAYS = Symbol("Already Plays");
 
-const addPlayer = (db, channel, game, playerId) => {
+const addPlayer = (db, guildId, game, playerId) => {
   const gameName = game.toLowerCase();
-  const gameDoc = db.doc(`/channels/${channel}/games/${gameName}`);
+  const gameDoc = db.doc(`/guilds/${guildId}/games/${gameName}`);
   updateGame = update(db)(gameDoc);
   return updateGame(oldGame => {
     const oldPlayers = _.get(oldGame, "players", []);

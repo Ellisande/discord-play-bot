@@ -10,8 +10,8 @@ const gamesCommand = new Command({
   name: "All Games",
   command: /(what|is|who|).*playing.*/gi,
   example: "what games are people playing?",
-  handler: ({ db, bot, channelId }) => {
-    const gameRef = db.collection(`channels/${channelId}/games`);
+  handler: ({ db, bot, channelId, guildId }) => {
+    const gameRef = db.collection(`guilds/${guildId}/games`);
     gameRef
       .get()
       .then(games => games.docs)

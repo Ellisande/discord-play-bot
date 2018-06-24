@@ -6,9 +6,9 @@ const iPlayCommand = new Command({
   name: "I Play",
   command: /i play /gi,
   example: "I play dauntless",
-  handler: ({ channelId, message, userId, db, bot, logger }) => {
+  handler: ({ channelId, message, userId, guildId, db, bot, logger }) => {
     const gameName = message.toLowerCase();
-    const playerUpdatePromise = addPlayer(db, channelId, gameName, userId);
+    const playerUpdatePromise = addPlayer(db, guildId, gameName, userId);
     return playerUpdatePromise
       .then(() => {
         logger.info(`player ${userId} now plays ${gameName}`);

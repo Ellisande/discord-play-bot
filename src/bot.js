@@ -7,6 +7,7 @@ const { whoPlaysCommand } = require("./commands/whoPlays");
 const { iPlayCommand } = require("./commands/iPlay");
 const { gamesCommand } = require("./commands/games");
 const { whatsNewCommand } = require("./commands/whatsNew");
+const { extractGuildId } = require("./discordUtils");
 
 const discordAuth =
   process.env.NODE_ENV == "production" ? {} : require("../auth.json");
@@ -47,18 +48,22 @@ const allCommands = [
 const playBotId = "456628305911873536";
 const botMentionMatcher = /<@456628305911873536> ?/;
 
+const isTestChannel = channel => channel == "457011209372303371";
+const isTestUser = user => user == "232704012070158336";
+
 bot.on("message", (user, userID, channelID, originalMessage, event) => {
-  const enableTestCommands = channelID == "457011209372303371";
+  const enableTestCommands = isTestChannel(channelID);
+  const guildId = extractGuildId(event);
 
   if (userID == playBotId) {
     logger.debug("Message was from play-bot himself");
     return;
   }
 
-  // if (channelID != "457011209372303371") {
-  //   logger.debug("Only test for now");
-  //   return;
-  // }
+  if (!isTestChannel(channelID)) {
+    logger.debug("Only test channel right now");
+    return;
+  }
 
   const commands = allCommands.filter(
     i => i.test == false || enableTestCommands
@@ -79,6 +84,7 @@ bot.on("message", (user, userID, channelID, originalMessage, event) => {
       user,
       userId: userID,
       channelId: channelID,
+      guildId,
       message,
       bot,
       event,
@@ -96,3 +102,14 @@ bot.on("message", (user, userID, channelID, originalMessage, event) => {
     });
   }
 });
+
+// bot.on("presence", (user, userID, status, game, event) => {
+//   if (!isTestUser(userID)) {
+//     return;
+//   }
+
+//   const gameName = game ? game.name : undefined;
+//   logger.debug(`${user} is playing ${gameName}`);
+//   // db.doc(`channels/${`)
+//   // update(db)()
+// });
