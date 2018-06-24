@@ -17,6 +17,7 @@ When(/the user says (who is|does anyone|who) (plays?|playing) (.*)/, function(
     db,
     userId: this.given.userId,
     channelId: this.given.channelId,
+    guildId: this.given.guildId,
     message: `${prefix} ${command} ${gameName}`
   });
 });

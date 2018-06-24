@@ -10,6 +10,7 @@ When(/the user says !i_play {(.*)}/, function(gameName) {
     db,
     userId: this.given.userId,
     channelId: this.given.channelId,
+    guildId: this.given.guildId,
     message: `!i_play ${gameName}`
   });
 });

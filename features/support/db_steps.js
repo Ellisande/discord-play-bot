@@ -21,6 +21,17 @@ Then(/the channel {(.*)} exists/, function(channelName) {
   return "pending";
 });
 
+Then(/the guild {(.*)} exists/, function(guildId) {
+  const {
+    db: { transactionSet, doc, docRef }
+  } = this.mocks;
+  const lastDoc = doc.lastArg;
+  expect(lastDoc).to.include(guildId);
+
+  const lastSet = transactionSet.callCount;
+  return "pending";
+});
+
 Then(/the game {(.*)} exists/, function(gameName) {
   const {
     db: { transactionGet, doc, docRef }

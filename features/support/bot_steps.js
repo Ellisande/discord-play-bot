@@ -16,6 +16,13 @@ Given(/a user {(.*)}/, function(userId) {
   }));
 });
 
+Given(/a guild {(.*)}/, function(guildId) {
+  this.setGiven(oldState => ({
+    ...oldState,
+    guildId
+  }));
+});
+
 Then(/the bot responds with {(.*)}/, function(expectedMessage) {
   const { bot } = this.mocks;
   const calledWith = bot.sendMessage.lastArg;
