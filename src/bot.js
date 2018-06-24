@@ -60,10 +60,10 @@ bot.on("message", (user, userID, channelID, originalMessage, event) => {
     return;
   }
 
-  if (!isTestChannel(channelID)) {
-    logger.debug("Only test channel right now");
-    return;
-  }
+  // if (!isTestChannel(channelID)) {
+  //   logger.debug("Only test channel right now");
+  //   return;
+  // }
 
   const commands = allCommands.filter(
     i => i.test == false || enableTestCommands
