@@ -9,7 +9,7 @@ const newThings = [
 
 const whatsNewCommand = new Command({
   name: "What's new",
-  command: /(what's|what is|is anything) new\??/gi,
+  command: /(what'?s|what is|is anything) new\??/gi,
   example: "whats new?",
   handler: ({ message, bot, channelId, logger }) => {
     let numNewThings;

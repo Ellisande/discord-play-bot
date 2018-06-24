@@ -18,9 +18,9 @@ const whoPlaysCommand = new Command({
   name: "Who Plays",
   command: /(who is|does anyone|who) (plays?|playing) /gi,
   example: "who plays dauntless?",
-  handler: ({ db, channelId, message, bot, logger }) => {
+  handler: ({ db, channelId, guildId, message, bot, logger }) => {
     const gameName = message.toLowerCase();
-    const gameDoc = db.doc(`/channels/${channelId}/games/${gameName}`);
+    const gameDoc = db.doc(`/guilds/${guildId}/games/${gameName}`);
     logger.info(`Fetching players for ${gameName}`);
     return gameDoc
       .get()

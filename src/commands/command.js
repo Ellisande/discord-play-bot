@@ -26,7 +26,7 @@ class Command {
     this.example = example || this.commandString;
   }
 
-  handle({ bot, user, userId, channelId, message, event, db }) {
+  handle({ bot, user, userId, channelId, guildId, message, event, db }) {
     const { logger } = this;
     const remaining = message
       .replace(this.commandMatcher, "")
@@ -38,6 +38,7 @@ class Command {
       userId,
       channelId,
       message: remaining,
+      guildId,
       event,
       db,
       logger
