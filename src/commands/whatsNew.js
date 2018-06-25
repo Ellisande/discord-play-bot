@@ -1,6 +1,7 @@
 const { Command } = require("./command");
 
 const newThings = [
+  `New command <@456628305911873536> \`witness me\` will tell play to add you as a player to any game that shows up as your discord status`,
   `I have a much more natural interface now! Just metion me and ask about what you are looking for. Try <@456628305911873536> \`commands\` to learn more!`,
   `Thanks for asking! My memory is much better now, I won't forget the games you play anymore!`,
   `You can now tell me what games you play with !i_play {game}`,

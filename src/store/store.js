@@ -26,4 +26,18 @@ const addPlayer = (db, guildId, game, playerId) => {
   });
 };
 
-module.exports = { addPlayer, ALREADY_PLAYS };
+const getWatchedUsers = (db, guildId) => {
+  const guildRef = db.doc(`guilds/${guildId}`);
+  return guildRef.get().then(doc => {
+    if (!doc.exists) {
+      return [];
+    }
+    const guild = doc.data();
+    if (!guild) {
+      return [];
+    }
+    return guild.watched_users || [];
+  });
+};
+
+module.exports = { addPlayer, ALREADY_PLAYS, getWatchedUsers };

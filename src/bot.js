@@ -9,6 +9,7 @@ const { gamesCommand } = require("./commands/games");
 const { whatsNewCommand } = require("./commands/whatsNew");
 const { witnessMeCommand } = require("./commands/witnessMe");
 const { extractGuildId } = require("./discordUtils");
+const { getWatchedUsers, addPlayer, ALREADY_PLAYS } = require("./store/store");
 
 const discordAuth =
   process.env.NODE_ENV == "production" ? {} : require("../auth.json");
@@ -106,7 +107,36 @@ bot.on("message", (user, userID, channelID, originalMessage, event) => {
 });
 
 bot.on("presence", (user, userID, status, game, event) => {
-  if (!isTestUser(userID)) {
+  // if (!isTestUser(userID)) {
+  //   return;
+  // }
+  const guildId = extractGuildId(event);
+  const watchedPromise = getWatchedUsers(db, guildId);
+  const gameName = game ? game.name : "";
+  if (_.isEmpty(gameName)) {
+    logger.debug(
+      `Did not track game for watched user ${userID} because the game name was undefined`
+    );
     return;
   }
+  const addPlayerPromise = watchedPromise.then(watchedUsers => {
+    if (watchedUsers.includes(userID)) {
+      logger.debug(
+        `Attempting to add player ${userID} to game ${gameName} for guild ${guildId}`
+      );
+      return addPlayer(db, guildId, gameName, userID);
+    }
+    logger.debug(`${userID} in ${guildId} is not being watched`);
+    return Promise.reject();
+  });
+  return addPlayerPromise.then(
+    () => logger.info(`player ${userID} now plays ${gameName}`),
+    error => {
+      if (error === ALREADY_PLAYS) {
+        logger.debug(`${userID} already plays ${gameName}`);
+        return;
+      }
+      throw error;
+    }
+  );
 });
