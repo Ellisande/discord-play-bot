@@ -7,6 +7,7 @@ const { whoPlaysCommand } = require("./commands/whoPlays");
 const { iPlayCommand } = require("./commands/iPlay");
 const { gamesCommand } = require("./commands/games");
 const { whatsNewCommand } = require("./commands/whatsNew");
+const { witnessMeCommand } = require("./commands/witnessMe");
 const { extractGuildId } = require("./discordUtils");
 
 const discordAuth =
@@ -42,7 +43,8 @@ const allCommands = [
   whoPlaysCommand,
   iPlayCommand,
   gamesCommand,
-  whatsNewCommand
+  whatsNewCommand,
+  witnessMeCommand
 ];
 
 const playBotId = "456628305911873536";
@@ -103,13 +105,8 @@ bot.on("message", (user, userID, channelID, originalMessage, event) => {
   }
 });
 
-// bot.on("presence", (user, userID, status, game, event) => {
-//   if (!isTestUser(userID)) {
-//     return;
-//   }
-
-//   const gameName = game ? game.name : undefined;
-//   logger.debug(`${user} is playing ${gameName}`);
-//   // db.doc(`channels/${`)
-//   // update(db)()
-// });
+bot.on("presence", (user, userID, status, game, event) => {
+  if (!isTestUser(userID)) {
+    return;
+  }
+});
