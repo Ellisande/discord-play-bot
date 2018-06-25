@@ -1,7 +1,7 @@
 const { Command } = require("./command");
 const { update } = require("../firestoreUtils");
 
-const ALREADY_WATCHED = Symbol("ALREAD_WATCHED");
+const ALREADY_WATCHED = Symbol("ALREADY_WATCHED");
 
 const witnessMeCommand = new Command({
   name: "Witness Me",
@@ -26,12 +26,23 @@ const witnessMeCommand = new Command({
         };
       }
     );
-    return updatePromise.then(() => {
-      bot.sendMessage({
-        to: channelId,
-        message: `<@${userId}> we ride eternal! Shiny and chrome!`
+    return updatePromise
+      .then(() => {
+        bot.sendMessage({
+          to: channelId,
+          message: `<@${userId}> we ride eternal! Shiny and chrome!`
+        });
+      })
+      .catch(error => {
+        if (error === ALREADY_WATCHED) {
+          bot.sendMessage({
+            to: channelId,
+            message: `<@${userId}> you are being witnessed.`
+          });
+          return;
+        }
+        throw error;
       });
-    });
   }
 });
 
