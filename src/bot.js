@@ -113,9 +113,17 @@ bot.on("presence", (user, userID, status, game, event) => {
   const guildId = extractGuildId(event);
   const watchedPromise = getWatchedUsers(db, guildId);
   const gameName = game ? game.name : "";
+  logger.debug(`The game is ${JSON.stringify(game)}`);
+
   if (_.isEmpty(gameName)) {
     logger.debug(
       `Did not track game for watched user ${userID} because the game name was undefined`
+    );
+    return;
+  }
+  if (game.streaming || game.url) {
+    logger.debug(
+      `Did not track game for watched user ${userID} because they were streaming`
     );
     return;
   }
@@ -136,7 +144,6 @@ bot.on("presence", (user, userID, status, game, event) => {
         logger.debug(`${userID} already plays ${gameName}`);
         return;
       }
-      throw error;
     }
   );
 });
