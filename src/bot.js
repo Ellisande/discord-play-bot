@@ -113,7 +113,7 @@ bot.on("presence", (user, userID, status, game, event) => {
   const guildId = extractGuildId(event);
   const watchedPromise = getWatchedUsers(db, guildId);
   const gameName = game ? game.name : "";
-  logger.debug(`The game is ${JSON.stringify(game)}`);
+  // logger.debug(`The game is ${JSON.stringify(game)}`);
 
   if (_.isEmpty(gameName)) {
     logger.debug(
