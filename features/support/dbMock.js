@@ -35,8 +35,7 @@ const createMockDb = (initialState = {}, initialCollection = []) => {
     set: setMock
   };
   const runTransactionMock = callback => {
-    callback(transactionMock);
-    return Promise.resolve();
+    return callback(transactionMock);
   };
 
   const dbMock = {
