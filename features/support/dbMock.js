@@ -14,7 +14,7 @@ const createMockDb = (initialState = {}, initialCollection = []) => {
   });
 
   const collectionDocs = {
-    docs: sinon.fake.returns(collection)
+    docs: collection
   };
 
   const collectionRefMock = {
