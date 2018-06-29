@@ -1,7 +1,7 @@
 const { Given, When, Then } = require("cucumber");
 
 Given(/no one plays any games/, function() {
-  this.updateDbBuilder(builder => builder.updateState(() => ({ players: [] })));
+  this.updateMockDbState(oldState => ({ ...oldState, players: [] }));
 });
 
 When(/the user says (who is|does anyone|who) (plays?|playing) (.*)/, function(

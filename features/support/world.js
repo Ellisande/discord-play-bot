@@ -23,6 +23,14 @@ class CustomWorld {
     };
   }
 
+  updateMockDbState(updateFunc) {
+    this.dbBuilder = this.dbBuilder.updateState(updateFunc);
+  }
+
+  updateMockDbCollection(updateFunc) {
+    this.dbBuilder = this.dbBuilder.updateCollection(updateFunc);
+  }
+
   updateDbBuilder(updateFunc) {
     this.dbBuilder = updateFunc(this.dbBuilder);
   }

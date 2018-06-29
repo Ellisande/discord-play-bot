@@ -46,6 +46,9 @@ const createMockDb = (initialState = {}, initialCollection = []) => {
     get lastStateUpdate() {
       return setMock.lastArg;
     },
+    get lastUpdatedPath() {
+      return mockDocRef.lastArg;
+    },
     // Actual db funcs
     doc: mockDocRef,
     collection: collectionMock,
