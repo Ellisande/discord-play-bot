@@ -1,8 +1,11 @@
 const { Given, When, Then } = require("cucumber");
 
-When(/the user says !i_play {(.*)}/, function(gameName) {
-  const { bot, user, db, event } = this.mocks;
+When(/the user says I play {(.*)}/i, function(gameName) {
+  const { bot, user, event } = this.mocks;
   const { iPlayCommand: commandClass } = require(`../../src/commands/iPlay`);
+
+  const db = this.createDbMock();
+
   return commandClass.handle({
     bot,
     user,
@@ -11,6 +14,6 @@ When(/the user says !i_play {(.*)}/, function(gameName) {
     userId: this.given.userId,
     channelId: this.given.channelId,
     guildId: this.given.guildId,
-    message: `!i_play ${gameName}`
+    message: `I play ${gameName}`
   });
 });

@@ -1,34 +1,6 @@
 const { setWorldConstructor } = require("cucumber");
+const { MockDbBuilder } = require("./dbMock");
 const sinon = require("sinon");
-
-const dbMock = () => {
-  const collection = sinon.fake();
-  const docMock = {
-    exists: true,
-    data: sinon.fake.resolves({ players: [] })
-  };
-  const doc = sinon.fake.returns({
-    get: sinon.fake.resolves(docMock)
-  });
-  const transactionGet = sinon.fake.resolves(doc);
-  const transactionSet = sinon.fake.resolves();
-  const runTransaction = sinon.fake(func => {
-    return Promise.resolve(
-      func({
-        get: transactionGet,
-        set: transactionSet
-      })
-    );
-  });
-  return {
-    collection,
-    doc,
-    runTransaction,
-    transactionGet,
-    transactionSet,
-    docRef: docMock
-  };
-};
 
 const botMock = () => ({
   sendMessage: sinon.fake()
@@ -43,12 +15,28 @@ class CustomWorld {
     this[given] = {};
     this[when] = {};
     this[then] = {};
+    this.dbBuilder = new MockDbBuilder();
     this.mocks = {
-      db: dbMock(),
       bot: botMock(),
       user: sinon.fake(),
       even: sinon.fake()
     };
+  }
+
+  updateDbBuilder(updateFunc) {
+    this.dbBuilder = updateFunc(this.dbBuilder);
+  }
+
+  createDbMock() {
+    if (this.mocks.db) {
+      throw "Cannot set db mock twice in one test";
+    }
+    const dbMock = this.dbBuilder.build();
+    this.mocks = {
+      ...this.mocks,
+      db: dbMock
+    };
+    return dbMock;
   }
 
   setValue(storySection, updateFunction) {
