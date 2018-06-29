@@ -1,10 +1,6 @@
 const winston = require("winston");
 const { extractGuildId } = require("../discordUtils");
-const { whoPlaysCommand } = require("../commands/whoPlays");
-const { iPlayCommand } = require("../commands/iPlay");
-const { gamesCommand } = require("../commands/games");
-const { whatsNewCommand } = require("../commands/whatsNew");
-const { witnessMeCommand } = require("../commands/witnessMe");
+const { allCommands } = require("../commands/all");
 
 const logger = winston.createLogger({
   transports: [new winston.transports.Console()]
@@ -13,15 +9,6 @@ logger.level = "debug";
 
 const playBotId = "456628305911873536";
 const botMentionMatcher = /<@456628305911873536> ?/;
-
-// TODO: Extract this into its own module
-const allCommands = [
-  whoPlaysCommand,
-  iPlayCommand,
-  gamesCommand,
-  whatsNewCommand,
-  witnessMeCommand
-];
 
 const isTestChannel = channel => channel == "457011209372303371";
 const isTestUser = user => user == "232704012070158336";
