@@ -23,6 +23,21 @@ Given(/a guild {(.*)}/, function(guildId) {
   }));
 });
 
+When(/the user says to the bot {(.*)}/, function(userMessage) {
+  const { handleMessage } = require("../../src/bot/messageHandler");
+  const { botId } = require("../../src/bot/info");
+  const fullMessage = `<@${botId}> ${userMessage}`;
+  return handleMessage({
+    user: this.given.user,
+    userId: this.given.userId,
+    channelId: this.given.channelId,
+    originalMessage: fullMessage,
+    event: this.given.event,
+    bot: this.mocks.bot,
+    db: this.createDbMock()
+  });
+});
+
 Then(/the bot responds with {(.*)}/, function(expectedMessage) {
   const { bot } = this.mocks;
   const calledWith = bot.sendMessage.lastArg;
