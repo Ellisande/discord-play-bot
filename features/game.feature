@@ -6,3 +6,5 @@ Feature: Users can ask about all the games currently being played
         Then the bot responds with {game1}
 
     Scenario: No games are being played right now
+        When the user says to the bot {what games are people playing?}
+        Then the bot responds with {Life is saddness}

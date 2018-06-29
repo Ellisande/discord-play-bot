@@ -17,7 +17,10 @@ const gamesCommand = new Command({
       .then(gameCollection => gameCollection.docs)
       .then(games => games.map(game => game.id))
       .then(
-        gameNames => `Games played in this channel: ${gameNames.join(", ")}`
+        gameNames =>
+          gameNames.length > 0
+            ? `Games played in this channel: ${gameNames.join(", ")}`
+            : `No one plays any games. Life is saddness.`
       )
       .then(message => sendMessage(bot, channelId, message));
   }
