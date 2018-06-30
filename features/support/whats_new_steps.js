@@ -4,7 +4,7 @@ When(/the user says (what's|what is|is anything) (new.*)/, function(
   command,
   remaining
 ) {
-  const { bot, user, db, event } = this.mocks;
+  const { bot, user, event } = this.mocks;
   const {
     whatsNewCommand: commandClass
   } = require(`../../src/commands/whatsNew`);
@@ -13,7 +13,6 @@ When(/the user says (what's|what is|is anything) (new.*)/, function(
     bot,
     user,
     event,
-    db,
     userId: this.given.userId,
     channelId: this.given.channelId,
     message: `${command} ${remaining}`

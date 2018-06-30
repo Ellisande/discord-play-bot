@@ -1,14 +1,20 @@
 const { Given, When, Then } = require("cucumber");
 
+Given(/no one plays any games/, function() {
+  this.updateMockDbState(oldState => ({ ...oldState, players: [] }));
+});
+
 When(/the user says (who is|does anyone|who) (plays?|playing) (.*)/, function(
   prefix,
   command,
   gameName
 ) {
-  const { bot, user, db, event } = this.mocks;
+  const { bot, user, event } = this.mocks;
   const {
     whoPlaysCommand: commandClass
   } = require(`../../src/commands/whoPlays`);
+
+  const db = this.createDbMock();
 
   return commandClass.handle({
     bot,

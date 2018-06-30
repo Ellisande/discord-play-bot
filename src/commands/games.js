@@ -12,11 +12,16 @@ const gamesCommand = new Command({
   example: "what games are people playing?",
   handler: ({ db, bot, channelId, guildId }) => {
     const gameRef = db.collection(`guilds/${guildId}/games`);
-    gameRef
+    return gameRef
       .get()
-      .then(games => games.docs)
+      .then(gameCollection => gameCollection.docs)
       .then(games => games.map(game => game.id))
-      .then(games => `Games played in this channel: ${games.join(", ")}`)
+      .then(
+        gameNames =>
+          gameNames.length > 0
+            ? `Games played in this channel: ${gameNames.join(", ")}`
+            : `No one plays any games. Life is saddness.`
+      )
       .then(message => sendMessage(bot, channelId, message));
   }
 });

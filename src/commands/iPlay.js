@@ -18,7 +18,6 @@ const iPlayCommand = new Command({
         });
       })
       .catch(error => {
-        logger.error(error);
         logger.debug(`Could not add player ${userId} to ${gameName}`);
         if (error === ALREADY_PLAYS) {
           logger.debug(`${userId} already plays ${gameName}`);

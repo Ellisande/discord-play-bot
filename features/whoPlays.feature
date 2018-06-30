@@ -12,5 +12,6 @@ Feature: Users can ask who plays a game and get a list of player
         Given a channel {channel1}
         And a guild {guild1}
         And a user {user1}
+        And no one plays any games
         When the user says does anyone play game2
         Then the bot responds with {No one plays game2}

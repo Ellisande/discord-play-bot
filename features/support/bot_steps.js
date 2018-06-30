@@ -16,11 +16,34 @@ Given(/a user {(.*)}/, function(userId) {
   }));
 });
 
+Given(/a test user/, function() {
+  const { testUserId } = require("../../src/bot/testUtils");
+  this.setGiven(oldState => ({
+    ...oldState,
+    userId: testUserId
+  }));
+});
+
 Given(/a guild {(.*)}/, function(guildId) {
   this.setGiven(oldState => ({
     ...oldState,
     guildId
   }));
+});
+
+When(/the user says to the bot {(.*)}/, function(userMessage) {
+  const { handleMessage } = require("../../src/bot/messageHandler");
+  const { botId } = require("../../src/bot/info");
+  const fullMessage = `<@${botId}> ${userMessage}`;
+  return handleMessage({
+    user: this.given.user,
+    userId: this.given.userId,
+    channelId: this.given.channelId,
+    originalMessage: fullMessage,
+    event: this.given.event,
+    bot: this.mocks.bot,
+    db: this.createDbMock()
+  });
 });
 
 Then(/the bot responds with {(.*)}/, function(expectedMessage) {

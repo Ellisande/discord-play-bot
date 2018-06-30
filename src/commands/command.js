@@ -1,6 +1,6 @@
 const winston = require("winston");
 
-const { combine, json, printf } = winston.format;
+const { combine, json } = winston.format;
 
 const logLevel = process.env.LOG_LEVEL || "debug";
 

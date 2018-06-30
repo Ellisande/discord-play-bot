@@ -1,5 +1,6 @@
 const { Command } = require("./command");
 const { update } = require("../firestoreUtils");
+const _ = require("lodash");
 
 const ALREADY_WATCHED = Symbol("ALREADY_WATCHED");
 
@@ -9,23 +10,17 @@ const witnessMeCommand = new Command({
   example: "witness me",
   test: false,
   handler: ({ bot, channelId, userId, db, guildId }) => {
-    const watchedUsers = db.doc(`guilds/${guildId}`);
-    const updateWatched = update(db)(watchedUsers);
-    const updatePromise = updateWatched(
-      (
-        oldWatched = {
-          watched_users: []
-        }
-      ) => {
-        if (oldWatched.watched_users.includes(userId)) {
-          throw ALREADY_WATCHED;
-        }
-        return {
-          ...oldWatched,
-          watched_users: [...oldWatched.watched_users, userId]
-        };
+    const updateWatched = update(db)(`guilds/${guildId}`);
+    const updatePromise = updateWatched((oldWatched = {}) => {
+      const oldWatchedUsers = _.get(oldWatched, "watched_users", []);
+      if (oldWatchedUsers.includes(userId)) {
+        throw ALREADY_WATCHED;
       }
-    );
+      return {
+        ...oldWatched,
+        watched_users: [...oldWatchedUsers, userId]
+      };
+    });
     return updatePromise
       .then(() => {
         bot.sendMessage({
