@@ -1,6 +1,7 @@
 const winston = require("winston");
 const { extractGuildId } = require("../discordUtils");
 const { allCommands } = require("../commands/all");
+const { isTestChannel, isTestUser } = require("./testUtils");
 
 const logger = winston.createLogger({
   transports: [new winston.transports.Console()]
@@ -10,27 +11,24 @@ logger.level = "debug";
 const playBotId = "456628305911873536";
 const botMentionMatcher = /<@456628305911873536> ?/;
 
-const isTestChannel = channel => channel == "457011209372303371";
-const isTestUser = user => user == "232704012070158336";
-
 const handleMessage = ({
   user,
-  userID,
-  channelID,
+  userId,
+  channelId,
   originalMessage,
   event,
   bot,
   db
 }) => {
-  const enableTestCommands = isTestChannel(channelID);
+  const enableTestCommands = isTestChannel(channelId);
   const guildId = extractGuildId(event);
 
-  if (userID == playBotId) {
+  if (userId == playBotId) {
     logger.debug("Message was from play-bot himself");
     return;
   }
 
-  // if (!isTestChannel(channelID)) {
+  // if (!isTestChannel(channelId)) {
   //   logger.debug("Only test channel right now");
   //   return;
   // }
@@ -52,8 +50,8 @@ const handleMessage = ({
     return matchingCommand.handle({
       db,
       user,
-      userId: userID,
-      channelId: channelID,
+      userId: userId,
+      channelId: channelId,
       guildId,
       message,
       bot,
@@ -61,18 +59,7 @@ const handleMessage = ({
       logger
     });
   }
-  if (message.match(/^commands/i)) {
-    bot.sendMessage({
-      to: channelID,
-      message:
-        "Try asking me:\n" +
-        commands
-          .map((i, index) => `[${index + 1}]: <@${playBotId}> ${i.example}`)
-          .join("\n")
-    });
-    return Promise.resolve();
-  }
-  return Promise.reject();
+  return Promise.resolve();
 };
 
 module.exports = { handleMessage };

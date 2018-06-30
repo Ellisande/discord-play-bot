@@ -16,6 +16,14 @@ Given(/a user {(.*)}/, function(userId) {
   }));
 });
 
+Given(/a test user/, function() {
+  const { testUserId } = require("../../src/bot/testUtils");
+  this.setGiven(oldState => ({
+    ...oldState,
+    userId: testUserId
+  }));
+});
+
 Given(/a guild {(.*)}/, function(guildId) {
   this.setGiven(oldState => ({
     ...oldState,
