@@ -4,7 +4,7 @@ Feature: Users can ask play bot about what has changed
         Given a channel {channel1}
         And a user {user1}
         And user {user2} plays {game1}
-        When the user says what's new?
+        When the user says to the bot {what's new?}
         Then the bot responds with {[1]}
 
 
@@ -12,5 +12,5 @@ Feature: Users can ask play bot about what has changed
         Given a channel {channel1}
         And a user {user1}
         And user {user2} plays {game1}
-        When the user says what's new?
+        When the user says to the bot {what's new?}
         Then the bot responds with {[1]}

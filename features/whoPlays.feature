@@ -5,7 +5,7 @@ Feature: Users can ask who plays a game and get a list of player
         And a guild {guild1}
         And a user {user1}
         And user {user2} plays {game1}
-        When the user says who plays game1
+        When the user says to the bot {who plays game1}
         Then the bot responds with {game1 players: <@user2>}
 
     Scenario: No one plays the requested game
@@ -13,5 +13,5 @@ Feature: Users can ask who plays a game and get a list of player
         And a guild {guild1}
         And a user {user1}
         And no one plays any games
-        When the user says does anyone play game2
+        When the user says to the bot {does anyone play game2}
         Then the bot responds with {No one plays game2}
