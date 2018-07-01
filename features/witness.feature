@@ -5,6 +5,21 @@ Feature: Users can opt into having their games be watched and added
         And a guild {guild1}
         When the user says to the bot {witness me}
         Then the user {user1} is added to the watched players list
+        And the bot responds with {we ride eternal - shiny and chrome!}
+
+    Scenario: Users can start being watched with a harry potter theme
+        Given a user {user1}
+        And a guild {guild1}
+        When the user says to the bot {I solemnly swear that I am up to no good}
+        Then the user {user1} is added to the watched players list
+        And the bot responds with {this little beauty's taught us more than all the teachers in this school}
+
+    Scenario: Users can stop being watched with a harry potter theme
+        Given a user {user1}
+        And a guild {guild1}
+        When the user says to the bot {mischief managed}
+        Then the user {user1} is no longer on the watched players list
+        And the bot responds with {things we lose have a way of coming back to us in the end, if not always in the way we expect}
 
     Scenario: A watched user is automatically added to new games
         Given a watched user {user1}

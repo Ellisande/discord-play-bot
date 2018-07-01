@@ -41,8 +41,7 @@ const getWatchedUsers = (db, guildId) => {
 };
 
 const addWatchedUser = (db, guildId, userId) => {
-  const watchedUsers = db.doc(`guilds/${guildId}`);
-  const updateWatched = update(db)(watchedUsers);
+  const updateWatched = update(db)(`guilds/${guildId}`);
   return updateWatched((oldWatched = { watched_users: [] }) => {
     if (oldWatched.watched_users.includes(userId)) {
       throw ALREADY_WATCHED;
@@ -54,10 +53,25 @@ const addWatchedUser = (db, guildId, userId) => {
   });
 };
 
+const removeWatchedUser = (db, guildId, userId) => {
+  console.log("-------------", guildId, userId, `guilds/${guildId}`);
+  const updateWatched = update(db)(`guilds/${guildId}`);
+  return updateWatched((oldWatched = { watched_users: [] }) => {
+    const newWatched = (oldWatched.watched_users || []).filter(
+      watchedUser => watchedUser !== userId
+    );
+    return {
+      ...oldWatched,
+      watched_users: newWatched
+    };
+  });
+};
+
 module.exports = {
   addPlayer,
   ALREADY_PLAYS,
   getWatchedUsers,
   addWatchedUser,
+  removeWatchedUser,
   ALREADY_WATCHED
 };

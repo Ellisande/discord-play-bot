@@ -60,3 +60,12 @@ Then(/the game {(.*)} is not updated/, function(gameName) {
   const updatePath = db.lastUpdatedPath;
   expect(updatePath).not.to.include(gameName);
 });
+
+Then(/the user {(.*)} is no longer on the watched players list/, function(
+  userId
+) {
+  const { db } = this.mocks;
+  const newState = db.lastStateUpdate;
+  const newPlayers = newState.watched_users;
+  expect(newPlayers).not.to.include(userId);
+});

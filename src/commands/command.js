@@ -38,6 +38,7 @@ class Command {
       userId,
       channelId,
       message: remaining,
+      originalMessage: message,
       guildId,
       event,
       db,
