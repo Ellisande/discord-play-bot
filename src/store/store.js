@@ -10,6 +10,7 @@ logger.level = logLevel;
 
 const ALREADY_PLAYS = Symbol("ALREADY_PLAYS");
 const ALREADY_WATCHED = Symbol("ALREADY_WATCHED");
+const DOES_NOT_PLAY = Symbol("DOES_NOT_PLAY");
 
 const addPlayer = (db, guildId, game, playerId) => {
   const gameName = game.toLowerCase();
@@ -22,6 +23,20 @@ const addPlayer = (db, guildId, game, playerId) => {
     }
     const newPlayers = [...oldPlayers, playerId];
     logger.debug(`Updating player state from ${oldPlayers} to ${[newPlayers]}`);
+    return { players: newPlayers };
+  });
+};
+
+const removePlayer = (db, guildId, game, playerId) => {
+  const gameName = game.toLowerCase();
+  updateGame = update(db)(`/guilds/${guildId}/games/${gameName}`);
+  return updateGame(oldGame => {
+    const oldPlayers = _.get(oldGame, "players", []);
+    if (!oldPlayers.includes(playerId)) {
+      logger.info(`player ${playerId} does not play ${gameName}`);
+      throw DOES_NOT_PLAY;
+    }
+    const newPlayers = oldPlayers.filter(player => player !== playerId);
     return { players: newPlayers };
   });
 };
@@ -68,9 +83,11 @@ const removeWatchedUser = (db, guildId, userId) => {
 
 module.exports = {
   addPlayer,
+  removePlayer,
   ALREADY_PLAYS,
   getWatchedUsers,
   addWatchedUser,
   removeWatchedUser,
-  ALREADY_WATCHED
+  ALREADY_WATCHED,
+  DOES_NOT_PLAY
 };

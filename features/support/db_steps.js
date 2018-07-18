@@ -24,3 +24,10 @@ Then(/the user {(.*)} is added to the players list/, function(userId) {
   const actualPlayers = actualUpdate.players;
   expect(actualPlayers).to.include(userId);
 });
+
+Then(/the user {(.*)} is no longer on the players list/, function(userId) {
+  const { db } = this.mocks;
+  const actualUpdate = db.lastStateUpdate;
+  const actualPlayers = actualUpdate.players;
+  expect(actualPlayers).not.to.include(userId);
+});
