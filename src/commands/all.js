@@ -6,6 +6,7 @@ const { witnessMeCommand } = require("./witnessMe");
 const { helpCommand } = require("./help");
 const { pingCommand } = require("./ping");
 const { ignoreMeCommand } = require("./ignoreMe");
+const { quitCommand } = require("./quit");
 
 const allCommands = [
   whoPlaysCommand,
@@ -15,7 +16,8 @@ const allCommands = [
   witnessMeCommand,
   helpCommand,
   pingCommand,
-  ignoreMeCommand
+  ignoreMeCommand,
+  quitCommand
 ];
 
 module.exports = { allCommands };

@@ -17,7 +17,7 @@ const buildResponse = (userId, originalMessage) => {
 };
 
 const ignoreMeCommand = new Command({
-  command: /(mischief managed|)/,
+  command: /(mischief managed)/,
   name: "Ignore Me",
   //   test: true,
   example: "michief managed",

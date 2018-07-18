@@ -10,7 +10,7 @@ Feature: A user can say they are playing a game
         And the user {user1} is added to the players list
         And the bot responds with {<@user1> is now playing game1}
 
-    Scenario: The user alread plays the game
+    Scenario: The user already plays the game
         Given a guild {guild1}
         And a channel {channel1}
         And a user {user1}
