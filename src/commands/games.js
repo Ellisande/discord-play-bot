@@ -25,8 +25,10 @@ const gamesCommand = new Command({
           return "No one plays any games. Life is sadness";
         }
         const sample = sampleSize(gameNames, 5);
-        return `Some games played in this channel:
-          ${buildGamesMessage(sample)}`;
+        return (
+          "Some games played in this channel:\n" +
+          `${buildGamesMessage(sample)}`
+        );
       })
       .then(message => sendMessage(bot, channelId, message));
   }
