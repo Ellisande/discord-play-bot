@@ -114,6 +114,15 @@ Then(/the bot responds with {(.*)}/, function(expectedMessage) {
   expect(actualResponseMessage).to.include(expectedMessage);
 });
 
+Then(/the bot does not respond with {(.*)}/, function(expectedMessage) {
+  const { bot } = this.mocks;
+  const calledWith = bot.sendMessage.lastArg;
+  const actualResponseChannel = calledWith.to;
+  const actualResponseMessage = calledWith.message;
+  expect(actualResponseChannel).to.equal(this.given.channelId);
+  expect(actualResponseMessage).not.to.include(expectedMessage);
+});
+
 Then(/no error occurs/, function() {
   expect(this.when.result).to.be.fulfilled;
 });

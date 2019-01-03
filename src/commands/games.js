@@ -1,10 +1,14 @@
 const { Command } = require("./command");
+const { sampleSize } = require("lodash");
 
 const sendMessage = (bot, channelId, message) =>
   bot.sendMessage({
     to: channelId,
     message
   });
+
+const buildGamesMessage = names =>
+  names.map((value, index) => `${index + 1}. ${value}`).join("\n");
 
 const gamesCommand = new Command({
   name: "All Games",
@@ -16,12 +20,14 @@ const gamesCommand = new Command({
       .get()
       .then(gameCollection => gameCollection.docs)
       .then(games => games.map(game => game.id))
-      .then(
-        gameNames =>
-          gameNames.length > 0
-            ? `Games played in this channel: ${gameNames.join(", ")}`
-            : `No one plays any games. Life is saddness.`
-      )
+      .then(gameNames => {
+        if (gameNames.length <= 0) {
+          return "No one plays any games. Life is sadness";
+        }
+        const sample = sampleSize(gameNames, 5);
+        return `Some games played in this channel:
+          ${buildGamesMessage(sample)}`;
+      })
       .then(message => sendMessage(bot, channelId, message));
   }
 });
