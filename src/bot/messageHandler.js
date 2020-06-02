@@ -38,8 +38,7 @@ const handleMessage = ({
   );
 
   if (!originalMessage.match(botMentionMatcher)) {
-    logger.debug("Message was not a command");
-    logger.debug("Original message was: " + originalMessage);
+    logger.debug("Message was not a directed at play bot");
     return;
   }
 
