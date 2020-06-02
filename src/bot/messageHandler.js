@@ -4,12 +4,12 @@ const { allCommands } = require("../commands/all");
 const { isTestChannel, isTestUser } = require("./testUtils");
 
 const logger = winston.createLogger({
-  transports: [new winston.transports.Console()]
+  transports: [new winston.transports.Console()],
 });
 logger.level = "debug";
 
 const playBotId = "456628305911873536";
-const botMentionMatcher = /<@456628305911873536> ?/;
+const botMentionMatcher = /<@!456628305911873536> ?/;
 
 const handleMessage = ({
   user,
@@ -18,7 +18,7 @@ const handleMessage = ({
   originalMessage,
   event,
   bot,
-  db
+  db,
 }) => {
   const enableTestCommands = isTestChannel(channelId);
   const guildId = extractGuildId(event);
@@ -34,16 +34,17 @@ const handleMessage = ({
   // }
 
   const commands = allCommands.filter(
-    i => i.test == false || enableTestCommands
+    (i) => i.test == false || enableTestCommands
   );
 
   if (!originalMessage.match(botMentionMatcher)) {
     logger.debug("Message was not a command");
+    logger.debug("Original message was: " + originalMessage);
     return;
   }
 
   const message = originalMessage.replace(botMentionMatcher, "");
-  const matchingCommand = commands.find(currentCommand =>
+  const matchingCommand = commands.find((currentCommand) =>
     currentCommand.matches(message)
   );
   if (matchingCommand) {
@@ -56,7 +57,7 @@ const handleMessage = ({
       message,
       bot,
       event,
-      logger
+      logger,
     });
   }
   return Promise.resolve();
