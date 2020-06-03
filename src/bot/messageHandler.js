@@ -9,7 +9,7 @@ const logger = winston.createLogger({
 logger.level = "debug";
 
 const playBotId = "456628305911873536";
-const botMentionMatcher = /<@!456628305911873536> ?/;
+const botMentionMatcher = /<@!?456628305911873536> ?/;
 
 const handleMessage = ({
   user,
